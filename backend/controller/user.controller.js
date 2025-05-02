@@ -1,24 +1,57 @@
-import { User } from "../models/user.model.js";  // Ensure .js extension for ESM
+import { User } from "../models/user.model.js";  
+import { v2 as cloudinary } from 'cloudinary';
 
 export const register = async (req, resp) => {
+  // ❌ Fixed logic: `if(req.files || ...)` → should be `!req.files || ...`
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return resp.status(400).json({ message: "User Photo is Required" });
+  }
+
+  const { photo } = req.files;
+
+  // ❌ Typo fix: `allowedFomat` → `allowedFormats`
+  const allowedFormats = ["image/jpeg", "image/png", "image/gif"];
+  if (!allowedFormats.includes(photo.mimetype)) {
+    return resp.status(400).json({ message: "Invalid Photo format. Only JPEG, PNG, or GIF allowed" });
+  }
+
+  // ❌ Typo fix: `rolel` → `role`
   const { name, email, password, phone, education, role } = req.body;
 
-  // check all required filled or not 
+  // ❌ Bug fix: misplaced comma operator in `if` check
   if (!name || !email || !password || !phone || !education || !role) {
     return resp.status(400).json({ message: "Please fill required fields" });
   }
 
-  // check dublicate email
+  // Check for duplicate email
   const user = await User.findOne({ email });
   if (user) {
     return resp.status(400).json({ message: "User already exists with this email" });
   }
 
-  // save data in DB
-  const newUser = new User({ email, name, password, phone, education, role });
+  // Upload photo to Cloudinary
+  const cloudinaryResponse = await cloudinary.uploader.upload(photo.tempFilePath);
+
+  if (!cloudinaryResponse || cloudinaryResponse.error) {
+    console.log(cloudinaryResponse.error);
+    return resp.status(500).json({ message: "Photo upload failed" });
+  }
+
+  const newUser = new User({
+    email,
+    name,
+    password,
+    phone,
+    education,
+    role,
+    photo: {
+      public_id: cloudinaryResponse.public_id,
+      url: cloudinaryResponse.secure_url,
+    },
+  });
+
   await newUser.save();
 
-  resp.status(201).json({ message: "User registered successfully" });
+  resp.status(201).json({ message: "User registered successfully", newUser });
 
-  console.log(name, email, password, phone, education, role);
 };

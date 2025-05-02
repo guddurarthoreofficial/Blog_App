@@ -11,8 +11,12 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@types/express-fileupload": "^1.5.1",
+    "bcryptjs": "^3.0.2",
+    "cloudinary": "^2.6.0",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "express-fileupload": "^1.5.1",
     "mongodb": "^6.16.0",
     "mongoose": "^8.14.1",
     "validator": "^13.15.0"

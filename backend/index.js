@@ -3,15 +3,28 @@ import express from "express";
 import "dotenv/config";
 import mongoose from "mongoose";
 
+import fileUpload from 'express-fileupload';
+import { v2 as cloudinary } from 'cloudinary';
+
+
 import userRoute from "./routes/user.route.js";
 
 const app = express();
 const MONGO_URL = process.env.MONGO_URI;
 
-// middleware
+// =========== middleware ==============
 app.use(express.json());
 
-// ======== DB CODE ================ 
+// file upload using express file Upload
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "./tmp/",
+  })
+);
+
+
+// ========== DB CODE ================ 
 try {
   mongoose.connect(MONGO_URL);
   console.log("Connected to Mongodb");
@@ -23,6 +36,13 @@ try {
 // =============  Definig Routes =======================
 app.use('/api/users/',userRoute);
 
+
+// ================== Cloudinary Setup  ==================
+cloudinary.config({ 
+  cloud_name:process.env.CLOUD_NAME, 
+  api_key: process.env.CLOUD_API_KEY, 
+  api_secret:process.env.CLOUD_API_SECRET 
+});
 
 
 
