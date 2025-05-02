@@ -17,10 +17,10 @@ const userSchema = new mongoose.Schema({
         required:true,
         unique:true,
     },
-    photo:{
-        type:String,
-        required:true,
-    },
+    // photo:{
+    //     type:String,
+    //     required:true,
+    // },
     education:{
         type:String,
         required:true,
