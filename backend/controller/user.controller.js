@@ -1,24 +1,22 @@
 import { User } from "../models/user.model.js";  
 import { v2 as cloudinary } from 'cloudinary';
+import bcrypt from 'bcryptjs';
 
 export const register = async (req, resp) => {
-  // ❌ Fixed logic: `if(req.files || ...)` → should be `!req.files || ...`
+
   if (!req.files || Object.keys(req.files).length === 0) {
     return resp.status(400).json({ message: "User Photo is Required" });
   }
 
   const { photo } = req.files;
 
-  // ❌ Typo fix: `allowedFomat` → `allowedFormats`
   const allowedFormats = ["image/jpeg", "image/png", "image/gif"];
   if (!allowedFormats.includes(photo.mimetype)) {
     return resp.status(400).json({ message: "Invalid Photo format. Only JPEG, PNG, or GIF allowed" });
   }
 
-  // ❌ Typo fix: `rolel` → `role`
   const { name, email, password, phone, education, role } = req.body;
 
-  // ❌ Bug fix: misplaced comma operator in `if` check
   if (!name || !email || !password || !phone || !education || !role) {
     return resp.status(400).json({ message: "Please fill required fields" });
   }
@@ -37,10 +35,13 @@ export const register = async (req, resp) => {
     return resp.status(500).json({ message: "Photo upload failed" });
   }
 
+
+  const hashedPassword = await bcrypt.hash(password,10);
+
   const newUser = new User({
     email,
     name,
-    password,
+    password: hashedPassword,
     phone,
     education,
     role,
