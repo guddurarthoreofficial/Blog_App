@@ -3,6 +3,7 @@ import { v2 as cloudinary } from "cloudinary";
 import bcrypt from "bcryptjs";
 import createTokenAndSaveCookies from "../jwt/authToken.js";
 
+// registation user
 export const register = async (req, resp) => {
   try {
     // Check if a file was uploaded
@@ -136,3 +137,17 @@ export const login = async (req, res) => {
     return res.status(500).json({ error: "Internal Server error" });
   }
 };
+
+
+export const logout = async (req, res) => {
+  try {
+    // Clear the token cookie by setting it to empty and expiring it
+    res.clearCookie("jwt",{ httpOnly: true });
+    return res.status(200).json({ message: "User logged out successfully" });
+    
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
