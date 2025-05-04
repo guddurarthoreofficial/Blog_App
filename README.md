@@ -62,10 +62,10 @@ Blog_App/
 ```bash
 git clone https://github.com/your-username/blog-app.git
 cd blog-app
+
+
 2. Backend Setup
-bash
-Copy
-Edit
+
 cd backend
 npm install
 Create a .env file inside backend/ and add:

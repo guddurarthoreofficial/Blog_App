@@ -5,13 +5,11 @@ import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
-
-
 import fileUpload from 'express-fileupload';
 import { v2 as cloudinary } from 'cloudinary';
 
-
 import userRoute from "./routes/user.route.js";
+import blogRoute from "./routes/blog.route.js";
 
 const app = express();
 const MONGO_URL = process.env.MONGO_URI;
@@ -47,6 +45,7 @@ try {
 
 // =============  Definig Routes =======================
 app.use('/api/users/',userRoute);
+app.use('/api/blogs/',blogRoute);
 
 
 // ================== Cloudinary Setup  ==================

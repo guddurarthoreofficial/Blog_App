@@ -14,7 +14,7 @@ export const register = async (req, resp) => {
     const { photo } = req.files;
 
     // Validate uploaded photo type
-    const allowedFormats = ["image/jpeg", "image/png", "image/gif"];
+    const allowedFormats = ["image/jpeg", "image/png", "image/webp"];
     if (!allowedFormats.includes(photo.mimetype)) {
       return resp.status(400).json({
         message: "Invalid Photo format. Only JPEG, PNG, or GIF allowed",
@@ -144,7 +144,7 @@ export const logout = async (req, res) => {
     // Clear the token cookie by setting it to empty and expiring it
     res.clearCookie("jwt",{ httpOnly: true });
     return res.status(200).json({ message: "User logged out successfully" });
-    
+
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal Server Error" });
