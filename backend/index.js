@@ -2,6 +2,10 @@
 import express from "express";
 import "dotenv/config";
 import mongoose from "mongoose";
+import cookieParser from "cookie-parser";
+import cors from "cors";
+
+
 
 import fileUpload from 'express-fileupload';
 import { v2 as cloudinary } from 'cloudinary';
@@ -14,6 +18,14 @@ const MONGO_URL = process.env.MONGO_URI;
 
 // =========== middleware ==============
 app.use(express.json());
+app.use(cookieParser());
+
+
+app.use(cors({
+  origin: "http://localhost:3005", // your frontend URL
+  credentials: true, // allow cookies
+}));
+
 
 // file upload using express file Upload
 app.use(
