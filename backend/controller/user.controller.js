@@ -1,6 +1,7 @@
 import { User } from "../models/user.model.js";  
 import { v2 as cloudinary } from 'cloudinary';
 import bcrypt from 'bcryptjs';
+import createTokenAndSAveCcookies from '../jwt/authToken.js'
 
 export const register = async (req, resp) => {
 
@@ -53,6 +54,7 @@ export const register = async (req, resp) => {
 
   await newUser.save();
 
+  const token = await createTokenAndSAveCcookies(newUser._id, resp)
   resp.status(201).json({ message: "User registered successfully", newUser });
 
 };
