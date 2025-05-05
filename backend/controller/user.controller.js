@@ -3,7 +3,7 @@ import { v2 as cloudinary } from "cloudinary";
 import bcrypt from "bcryptjs";
 import createTokenAndSaveCookies from "../jwt/authToken.js";
 
-// registation user
+// ================ registation user ===========
 export const register = async (req, resp) => {
   try {
     // Check if a file was uploaded
@@ -85,7 +85,7 @@ export const register = async (req, resp) => {
   }
 };
 
-// Login Controller Function
+//  ============ Login Controller Function  =================
 export const login = async (req, res) => {
   // Destructure email, password, and role from request body
   const { email, password, role } = req.body;
@@ -139,6 +139,7 @@ export const login = async (req, res) => {
 };
 
 
+//  ============ Logout Controller Function  =================
 export const logout = async (req, res) => {
   try {
     // Clear the token cookie by setting it to empty and expiring it
@@ -151,3 +152,30 @@ export const logout = async (req, res) => {
   }
 };
 
+//  ============ get MyProfile  Controller Function  =================
+export const getMyProfile = async (req, res) => {
+  const user = await req.user;
+  res.status(200).json(user);
+}
+
+// ============ Get All Admins Controller Function =================
+export const getAdmins = async (req, res) => {
+  try {
+    // Find all users where role is 'admin'
+    const admins = await User.find({ role: "admin" });
+
+    // Respond with the list of admin users
+    res.status(200).json(admins);
+  } catch (error) {
+    // Catch any server/database errors
+    console.error("Error fetching admins:", error);
+    res.status(500).json({ error: "Failed to fetch admins" });
+  }
+};
+
+
+// //  ============ get admin  Controller Function  =================
+// export const getAdmins =async (req,res) =>{
+//   const admins = await User.find({role:"admin"});
+//   res.status(200).json(admins);
+// }
