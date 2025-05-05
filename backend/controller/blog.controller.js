@@ -1,6 +1,8 @@
 import { Blog } from "../models/blog.model.js";
 import { v2 as cloudinary } from "cloudinary";
 
+
+// ========== Create Blog ==============
 export const createBlog = async (req, res) => {
   try {
     // Validate blog image
@@ -9,7 +11,7 @@ export const createBlog = async (req, res) => {
     }
 
     const { blogImage } = req.files;
-    
+
     const allowedFormats = ["image/jpeg", "image/png", "image/webp"];
     if (!allowedFormats.includes(blogImage.mimetype)) {
       return res.status(400).json({
@@ -66,3 +68,8 @@ export const createBlog = async (req, res) => {
     res.status(500).json({ error: "Internal Server error" });
   }
 };
+
+// export const deleteBlog = ()=>{
+//     const {id} = res.param;
+//     if()
+// }

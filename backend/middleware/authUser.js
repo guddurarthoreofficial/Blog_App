@@ -36,3 +36,32 @@ export const isAuthenticated = async (req, res, next) => {
         res.status(401).json({ err: "User is not authenticated" });
     }
 };
+
+
+// ==========   Authrizaton  Middleware  ================
+// Role-based Authorization Middleware
+export const isAdmin = (...roles) => {
+    return (req, res, next) => {
+        // Check if user's role is NOT included in allowed roles
+        if (!roles.includes(req.user.role)) { // ✅ fixed: req.user.roles ➜ req.user.role
+            return res.status(403).json({
+                error: `User with given role '${req.user.role}' is not allowed`
+            });
+        }
+
+        // If role is allowed, proceed to next middleware
+        next();
+    };
+};
+
+
+
+
+//  export const isAdmin = (...roles) => {
+//     return (req ,res , next) =>{
+//         if(roles.includes(req.user.roles)){
+//             return res.status(403).json({error: `User with given role ${req.user.role} is not allowed`})
+//         }
+//         next();
+//     }
+// }

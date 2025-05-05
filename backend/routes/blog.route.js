@@ -1,10 +1,11 @@
 import express from 'express';
-import {createBlog} from '../controller/blog.controller.js';
-import { isAuthenticated } from '../middleware/authUser.js';
+import {createBlog,deleteBlog} from '../controller/blog.controller.js';
+import { isAdmin, isAuthenticated } from '../middleware/authUser.js';
 
 const router = express.Router();
 
-router.post('/create',isAuthenticated,createBlog);
+router.post('/create',isAuthenticated,isAdmin("admin"),createBlog);
+router.post('/delete/:id',isAuthenticated,isAdmin("admin"),deleteBlog);
 
 
 
