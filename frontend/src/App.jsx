@@ -1,27 +1,37 @@
 import './App.css'
+import Navbar from './components/Navbar'
+import Home from './components/Home'
+import Footer from './components/Footer'
+import { Routes, Route, useLocation } from 'react-router-dom';
+import Blogs from './pages/Blogs';
+import About from './pages/About';
+import Contact from './pages/Contact';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Dashboard from './pages/Dashboard';
 
 function App() {
+  const location = useLocation();
+  const hideNavbarFooter = ["/dashboard","login","register"].includes(location.pathname);
 
 
   return (
     <>
-      <h2>
-        Hello world!
-      </h2>
+     {!hideNavbarFooter && <Navbar/>}
 
-      <div>
-        <div class="bg-sky-300">rahul kumar</div>
-        <div class="bg-sky-100">rahul kumar</div>
-        <div class="bg-sky-200">rahul kumar</div>
-        <div class="bg-sky-300">rahul kumar</div>
-        <div class="bg-sky-400">rahul kumar</div>
-        <div class="bg-sky-500">rahul kumar</div>
-        <div class="bg-sky-600">rahul kumar</div>
-        <div class="bg-sky-700">rahul kumar</div>
-        <div class="bg-sky-800">rahul kumar</div>
-        <div class="bg-sky-900">rahul kumar</div>
-        <div class="bg-sky-950">rahul kumar</div>
-      </div>
+     {/* ============= defineing routes ==============*/}
+
+     <Routes>
+     <Route path="/" element={<Home />} />
+     <Route path="/blogs" element={<Blogs />} />
+     <Route path="/about" element={<About />} />
+     <Route path="/contact" element={<Contact />} />
+     <Route path="/login" element={<Login />} />
+     <Route path="/register" element={<Register />} />
+     <Route path="/dashboard" element={<Dashboard />} />
+     </Routes>
+
+     {!hideNavbarFooter && <Footer/ >}
     </>
   )
 }
