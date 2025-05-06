@@ -10,6 +10,10 @@ import { v2 as cloudinary } from 'cloudinary';
 
 import userRoute from "./routes/user.route.js";
 import blogRoute from "./routes/blog.route.js";
+import "dotenv/config";
+
+
+
 
 const app = express();
 const MONGO_URL = process.env.MONGO_URI;
@@ -18,11 +22,13 @@ const MONGO_URL = process.env.MONGO_URI;
 app.use(express.json());
 app.use(cookieParser());
 
-
+// Allow requests from your frontend domain
 app.use(cors({
-  origin: "http://localhost:3005", // your frontend URL
-  credentials: true, // allow cookies
+  origin: process.env.FRONTEND_URL, // not a string literal
+  credentials: true,
 }));
+
+
 
 
 // file upload using express file Upload

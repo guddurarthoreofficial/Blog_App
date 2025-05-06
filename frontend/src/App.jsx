@@ -9,10 +9,14 @@ import Contact from './pages/Contact';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
+import { useAuth } from './context/AuthProvider';
 
 function App() {
   const location = useLocation();
   const hideNavbarFooter = ["/dashboard","login","register"].includes(location.pathname);
+
+  const {blogs} = useAuth();
+  console.log(blogs);
 
 
   return (
