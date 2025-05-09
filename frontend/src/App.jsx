@@ -8,34 +8,36 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Creators from './pages/Creators';
 import Dashboard from './pages/Dashboard';
 import { useAuth } from './context/AuthProvider';
 
 function App() {
   const location = useLocation();
-  const hideNavbarFooter = ["/dashboard","login","register"].includes(location.pathname);
+  const hideNavbarFooter = ["/dashboard", "login", "register"].includes(location.pathname);
 
-  const {blogs} = useAuth();
+  const { blogs } = useAuth();
   console.log(blogs);
 
 
   return (
     <>
-     {!hideNavbarFooter && <Navbar/>}
+      {!hideNavbarFooter && <Navbar />}
 
-     {/* ============= defineing routes ==============*/}
+      {/* ============= defineing routes ==============*/}
 
-     <Routes>
-     <Route path="/" element={<Home />} />
-     <Route path="/blogs" element={<Blogs />} />
-     <Route path="/about" element={<About />} />
-     <Route path="/contact" element={<Contact />} />
-     <Route path="/login" element={<Login />} />
-     <Route path="/register" element={<Register />} />
-     <Route path="/dashboard" element={<Dashboard />} />
-     </Routes>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/blogs" element={<Blogs />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/crearors" element={<Creators />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
 
-     {!hideNavbarFooter && <Footer/ >}
+      {!hideNavbarFooter && <Footer />}
     </>
   )
 }
