@@ -1,7 +1,7 @@
-import './App.css'
-import Navbar from './components/Navbar'
-import Home from './components/Home'
-import Footer from './components/Footer'
+import './App.css';
+import Navbar from './components/Navbar';
+import Home from './components/Home';
+import Footer from './components/Footer';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Blogs from './pages/Blogs';
 import About from './pages/About';
@@ -14,24 +14,22 @@ import { useAuth } from './context/AuthProvider';
 
 function App() {
   const location = useLocation();
-  const hideNavbarFooter = ["/dashboard", "login", "register"].includes(location.pathname);
+  const hideNavbarFooter = ["/dashboard", "/login", "/register"].includes(location.pathname.toLowerCase());
 
   const { blogs } = useAuth();
   console.log(blogs);
-
 
   return (
     <>
       {!hideNavbarFooter && <Navbar />}
 
-      {/* ============= defineing routes ==============*/}
-
+      {/* Define Routes */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/blogs" element={<Blogs />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/crearors" element={<Creators />} />
+        <Route path="/creators" element={<Creators />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
@@ -39,7 +37,7 @@ function App() {
 
       {!hideNavbarFooter && <Footer />}
     </>
-  )
+  );
 }
 
-export default App
+export default App;
