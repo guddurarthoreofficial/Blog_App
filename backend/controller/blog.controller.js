@@ -29,7 +29,7 @@ export const createBlog = async (req, res) => {
     }
 
     const adminName = req?.user?.name;
-    const adminPhoto = req?.user?.photo;
+    const adminPhoto = req?.user?.photo.url;
     const createdBy = req?.user?._id;
 
     // Upload image to Cloudinary
@@ -56,6 +56,9 @@ export const createBlog = async (req, res) => {
       },
     };
 
+    // degugging
+    console.log(blogData);
+
     // Save to DB
     const blog = await Blog.create(blogData);
 
@@ -64,6 +67,7 @@ export const createBlog = async (req, res) => {
       message: "Blog created successfully",
       blog,
     });
+    
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server error" });
