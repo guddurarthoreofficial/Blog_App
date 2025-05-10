@@ -36,11 +36,6 @@ function Login() {
         autoClose: 2000,
       });
 
-      // Clear form fields
-      setEmail("");
-      setPassword("");
-      setRole("");
-
     } catch (err) {
       console.error(err);
       const errorMessage = err?.response?.data?.message || "Login failed. Please try again.";
