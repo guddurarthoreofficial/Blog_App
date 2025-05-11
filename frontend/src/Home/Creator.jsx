@@ -29,7 +29,7 @@ function Creator() {
           admin.slice(0, 4).map((element) => (
             <div
               key={element._id}
-              className=" rounded-lg p-4 flex flex-col items-center transition-transform transform hover:scale-105 \ duration-300"
+              className=" rounded-lg p-4 flex flex-col items-center transition-transform transform hover:scale-105  duration-300"
             >
               <div className="rounded-full ring-4 ring-indigo-500 ring-offset-4 ring-offset-white">
                 <img

@@ -1,70 +1,100 @@
-import React, { useState } from 'react';
+import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
+import { useForm } from "react-hook-form";
+import axios from 'axios';
+import { toast } from 'react-toastify';
+
 
 const Contact = () => {
-  const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Contact form submitted:", form);
-    alert("Thank you! Your message has been received.");
-    setForm({ name: '', email: '', message: '' });
-  };
+  const onSubmit = async (data) => {
+    const userInfo = {
+      access_key: "5485c3fd-834d-4e9f-ab4d-f61c09438ac4",
+      name: data.name,
+      email: data.email,
+      message: data.message
+    }
+    try {
+      await axios.post("https://api.web3forms.com/submit", userInfo);
+      toast.success("Message sent successfully!");
+    } catch (err) {
+      toast.error(err)
+    }
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-8">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Contact Us</h2>
-        <p className="text-center text-gray-600 mb-8">
-          Have questions, feedback, or just want to connect? We'd love to hear from you.
-        </p>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-            <input
-              type="text"
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              required
-              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-              placeholder="Your Name"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-            <input
-              type="email"
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-              required
-              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-              placeholder="you@example.com"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
-            <textarea
-              name="message"
-              value={form.message}
-              onChange={handleChange}
-              required
-              rows={5}
-              className="w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
-              placeholder="Write your message here..."
-            ></textarea>
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition"
-          >
-            Send Message
-          </button>
-        </form>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+      <div className="bg-white shadow-lg rounded-lg p-8 md:flex w-full max-w-4xl">
+
+        {/* Contact Form */}
+        <div className="md:w-1/2 pr-6 mb-6 md:mb-0">
+          <h2 className="text-2xl font-bold mb-6 text-center md:text-left">Contact Us</h2>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="mb-4">
+              <input
+                type="text"
+                placeholder="Your Name"
+                className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-black"
+                {...register("name", { required: true })}
+              />
+              {errors.name && (
+                <p className="text-sm text-red-500 mt-1">This field is required</p>
+              )}
+            </div>
+            <div className="mb-4">
+              <input
+                type="email"
+                placeholder="Your Email"
+                className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-black"
+                {...register("email", { required: true })}
+              />
+              {errors.email && (
+                <p className="text-sm text-red-500 mt-1">This field is required</p>
+              )}
+            </div>
+            <div className="mb-4">
+              <textarea
+                rows="4"
+                placeholder="Your Message"
+                className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-black"
+                {...register("message", { required: true })}
+              ></textarea>
+              {errors.message && (
+                <p className="text-sm text-red-500 mt-1">This field is required</p>
+              )}
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-black text-white py-2 rounded hover:bg-gray-800 transition duration-200"
+            >
+              Send Message
+            </button>
+          </form>
+        </div>
+
+        {/* Contact Info */}
+        <div className="md:w-1/2 pl-6 border-t md:border-t-0 md:border-l border-gray-300">
+          <h3 className="text-xl font-semibold mb-4">Contact Information</h3>
+          <ul className="space-y-4 text-gray-700">
+            <li className="flex items-center">
+              <FaPhoneAlt className="text-red-500 mr-3" />
+              <span>+91 9523605578</span>
+            </li>
+            <li className="flex items-center">
+              <FaEnvelope className="text-purple-600 mr-3" />
+              <span>guddurathoreOfficial@gmail.com</span>
+            </li>
+            <li className="flex items-center">
+              <FaMapMarkerAlt className="text-green-600 mr-3" />
+              <span>Bettiah, West Champaran, India</span>
+            </li>
+          </ul>
+        </div>
+
       </div>
     </div>
   );

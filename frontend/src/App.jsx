@@ -12,6 +12,9 @@ import Creators from './pages/Creators';
 import Dashboard from './pages/Dashboard';
 import { useAuth } from './context/AuthProvider';
 
+
+
+
 function App() {
   const location = useLocation();
   const hideNavbarFooter = ["/dashboard", "/login", "/register"].includes(location.pathname.toLowerCase());
