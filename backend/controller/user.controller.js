@@ -154,9 +154,20 @@ export const logout = async (req, res) => {
 
 //  ============ get MyProfile  Controller Function  =================
 export const getMyProfile = async (req, res) => {
-  const user = await req.user;
-  res.status(200).json(user);
-}
+  try {
+    const user = req.user; // No need to await req.user unless it's a promise, which it usually isn't
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
 
 // ============ Get All Admins Controller Function =================
 export const getAdmins = async (req, res) => {

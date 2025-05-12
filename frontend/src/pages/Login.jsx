@@ -20,19 +20,20 @@ function Login() {
       return;
     }
 
+
     try {
       const { data } = await axios.post(
         "http://localhost:3005/api/users/login",
         { email, password, role },
         {
+          withCredentials: true, // ✅ important to send cookies
           headers: {
-            "Content-Type": "application/json", // Use JSON since you're not sending FormData
+            "Content-Type": "application/json",
           },
         }
       );
-
       toast.success(data.message || "Login successful!", {
-        onClose: () => navigate("/dashboard"), // Redirect on success
+        onClose: () => navigate("/"), // Redirect on success
         autoClose: 2000,
       });
 

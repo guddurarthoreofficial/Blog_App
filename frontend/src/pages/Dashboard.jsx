@@ -1,9 +1,14 @@
-import React from 'react'
+import { useAuth } from "../context/AuthProvider";
 
-const Dashboard = () => {
+function Dashboard() {
+  const { profile, isAuthenticated } = useAuth();
+  console.log(profile);
+  console.log(isAuthenticated);
   return (
-    <div>Dashboard</div>
-  )
+    <div>
+     Dashboard
+    </div>
+  );
 }
 
-export default Dashboard
+export default Dashboard;
