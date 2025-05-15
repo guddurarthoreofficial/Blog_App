@@ -190,3 +190,24 @@ export const getAdmins = async (req, res) => {
 //   const admins = await User.find({role:"admin"});
 //   res.status(200).json(admins);
 // }
+
+
+
+// ==================== update profile ====================
+
+export const updataProfile =  async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    const { name, email, phone, education } = req.body;
+
+    user.name = name || user.name;
+    user.email = email || user.email;
+    user.phone = phone || user.phone;
+    user.education = education || user.education;
+
+    await user.save();
+    res.status(200).json({ success: true, user });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Update failed", error: err.message });
+  }
+};

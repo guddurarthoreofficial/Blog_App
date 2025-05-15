@@ -9,6 +9,8 @@ const AuthProvider = ({ children }) => {
   const [profile, setProfile] = useState();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+  const [token ,setToken] = useState(null);
+
   useEffect(() => {
 
     const fetchProfile = async () => {
@@ -29,6 +31,7 @@ const AuthProvider = ({ children }) => {
           console.log(data.user);
           setProfile(data.user);
           setIsAuthenticated(true);
+          setToken(token)
         }
       } catch (error) {
         console.log(error);
@@ -54,7 +57,7 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ blogs, profile, isAuthenticated ,setIsAuthenticated}}>
+    <AuthContext.Provider value={{ blogs, profile, isAuthenticated ,setIsAuthenticated,token}}>
       {children}
     </AuthContext.Provider>
   );

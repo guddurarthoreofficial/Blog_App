@@ -24,9 +24,12 @@ app.use(cookieParser());
 
 // Allow requests from your frontend domain
 app.use(cors({
-  origin: process.env.FRONTEND_URL, // not a string literal
+  origin: process.env.FRONTEND_URL, // Your frontend URL
   credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
+
 
 
 

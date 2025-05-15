@@ -5,6 +5,9 @@ import { isAdmin, isAuthenticated } from '../middleware/authUser.js';
 const router = express.Router();
 
 router.post('/create',isAuthenticated,isAdmin("admin"),createBlog);
+
+// router.post('/create',createBlog);
+
 router.delete('/delete/:id',isAuthenticated,isAdmin("admin"),deleteBlog);
 
 // router.get('/all-blogs/',isAuthenticated,getAllBlogs);

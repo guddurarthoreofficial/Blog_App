@@ -1,5 +1,5 @@
 import express from 'express';
-import { register, login, logout, getMyProfile,getAdmins} from '../controller/user.controller.js';
+import { register, login, logout, getMyProfile,getAdmins, updataProfile} from '../controller/user.controller.js';
 import { isAuthenticated } from '../middleware/authUser.js';
 
 const router = express.Router();
@@ -9,6 +9,8 @@ router.post('/login',login);
 router.get("/logout",isAuthenticated, logout);
 
 router.get("/my-profile",isAuthenticated, getMyProfile);
+router.put("/update-profile", isAuthenticated,updataProfile )
+
 
 // router.get("/my-profile", getMyProfile);
 
