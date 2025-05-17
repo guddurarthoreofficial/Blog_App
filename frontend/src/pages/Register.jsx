@@ -3,9 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useAuth } from "../context/AuthProvider";
 
 function Register() {
   const navigate = useNavigate();
+  const {isAuthenticated,setIsAuthenticated } = useAuth();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -58,6 +60,7 @@ function Register() {
         onClose: () => navigate("/login"),
         autoClose: 2000,
       });
+      setIsAuthenticated(true);
 
       // Clear form
       setName("");

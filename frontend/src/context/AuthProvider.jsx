@@ -57,7 +57,7 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ blogs, profile, isAuthenticated ,setIsAuthenticated,token}}>
+    <AuthContext.Provider value={{ blogs, profile, isAuthenticated , setProfile ,setIsAuthenticated,token}}>
       {children}
     </AuthContext.Provider>
   );

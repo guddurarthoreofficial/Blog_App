@@ -6,6 +6,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 function Login() {
   const navigate = useNavigate();
+    const {isAuthenticated,setIsAuthenticated } = useAuth();
+  
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -36,6 +38,7 @@ function Login() {
         onClose: () => navigate("/"), // Redirect on success
         autoClose: 2000,
       });
+      setIsAuthenticated(true);
 
     } catch (err) {
       console.error(err);
