@@ -64,7 +64,7 @@ blog-app/
 
  Backend Setup (Express + MongoDB)
 
- git clone https://github.com/your-username/blog-app.git
+ git clone https://github.com/guddurarthoreofficial/Blog_App
 cd blog-app/server
 npm install
 

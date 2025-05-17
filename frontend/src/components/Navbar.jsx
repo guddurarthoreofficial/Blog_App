@@ -1,12 +1,41 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
+import { useAuth } from '../context/AuthProvider';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const Navbar = () => {
   const [show, setShow] = useState(false);
 
-  const handleCloseMenu = () => setShow(false);
+  const { profile, isAuthenticated, setIsAuthenticated } = useAuth();
 
+  console.log(profile);
+  console.log(isAuthenticated);
+
+
+  const handleLogOut = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.get("http://localhost:3005/api/users/logout", {
+        withCredentials: true,
+      });
+      setIsAuthenticated(false);
+      toast.success("Logout successful");
+      navigateTo('/login');
+    } catch (err) {
+      toast.error(err.message || "Logout failed");
+    }
+  };
+
+
+  const navigateTo = useNavigate();
+
+
+
+
+
+  const handleCloseMenu = () => setShow(false);
   return (
     <>
       <nav className='shadow-lg px-4 py-2'>
@@ -32,10 +61,28 @@ const Navbar = () => {
             </div>
           </div>
 
-          {/* Login Buttons */}
+          {/*  Dashboard && Login Buttons */}
+
           <div className='space-x-2 hidden md:flex'>
-            <Link to="/dashboard" className='bg-blue-600 text-white font-semibold hover:bg-blue-800 duration-300 px-4 py-2 rounded'>DASHBOARD</Link>
-            <Link to="/login" className='bg-red-600 text-white font-semibold hover:bg-red-800 duration-300 px-4 py-2 rounded'>LOGIN</Link>
+
+            {(isAuthenticated && profile.role === "admin") ? <Link to="/dashboard" className='bg-blue-600 text-white font-semibold hover:bg-blue-800 duration-300 px-4 py-2 rounded'>DASHBOARD</Link> : ""}
+
+            {!isAuthenticated ? (
+              <Link
+                to="/login"
+                className="bg-red-600 text-white font-semibold hover:bg-red-800 duration-300 px-4 py-2 rounded"
+              >
+                LOGIN
+              </Link>
+            ) : (
+              <button
+                onClick={handleLogOut}
+                className="bg-red-600 text-white font-semibold hover:bg-red-800 duration-300 px-4 py-2 rounded"
+              >
+                LOGOUT
+              </button>
+            )}
+
           </div>
         </div>
 

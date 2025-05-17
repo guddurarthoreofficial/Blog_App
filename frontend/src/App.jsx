@@ -12,6 +12,7 @@ import Creators from './pages/Creators';
 import Dashboard from './pages/Dashboard';
 import { useAuth } from './context/AuthProvider';
 import UpdateBlog from './dashboard/UpdateBlog';
+import Details from './pages/Details';
 
 
 
@@ -37,6 +38,11 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
+
+
+
+        {/*   update page routes */}
+        <Route path="/blog/:id" element={<Details />} />
 
         {/*   update page routes */}
         <Route path="/blog/update/:id" element={<UpdateBlog />} />
