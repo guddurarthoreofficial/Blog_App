@@ -16,7 +16,6 @@ const MyBlogs = () => {
         setMyBlogs(data);
       } catch (err) {
         console.error("Failed to fetch blogs:", err);
-        toast.error("Failed to load blogs");
       }
     };
 

@@ -13,6 +13,9 @@ import Dashboard from './pages/Dashboard';
 import { useAuth } from './context/AuthProvider';
 import UpdateBlog from './dashboard/UpdateBlog';
 import Details from './pages/Details';
+import { Navigate } from 'react-router-dom';
+import NotFound from './pages/NotFound';
+
 
 
 
@@ -21,8 +24,9 @@ function App() {
   const location = useLocation();
   const hideNavbarFooter = ["/dashboard", "/login", "/register"].includes(location.pathname.toLowerCase());
 
-  const { blogs } = useAuth();
+  const { blogs, isAuthenticated } = useAuth();
   console.log(blogs);
+  console.log(isAuthenticated);
 
   return (
     <>
@@ -30,6 +34,11 @@ function App() {
 
       {/* Define Routes */}
       <Routes>
+        <Route
+          path="/"
+          element={isAuthenticated ? <Home /> : <Navigate to="/login" replace />}
+        />
+
         <Route path="/" element={<Home />} />
         <Route path="/blogs" element={<Blogs />} />
         <Route path="/about" element={<About />} />
@@ -39,6 +48,10 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
 
+
+
+        {/*   Universal Routes */}
+        <Route path="*" element={<NotFound/>} />
 
 
         {/*   update page routes */}
