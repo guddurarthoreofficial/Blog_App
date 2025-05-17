@@ -35,6 +35,7 @@ const MyBlogs = () => {
     }
   };
 
+
   return (
     <>
       <ToastContainer position="top-right" autoClose={3000} />
@@ -55,7 +56,7 @@ const MyBlogs = () => {
                 <h2 className="text-lg font-semibold text-gray-800 mb-3">{element.title}</h2>
                 <div className="flex justify-between items-center">
                   <Link
-                    to={`/edit-blog/${element._id}`}
+                    to={`/blog/update/${element._id}`}
                     className="text-sm px-4 py-1 border border-blue-400 text-blue-500 rounded hover:bg-blue-50"
                   >
                     UPDATE
@@ -72,7 +73,7 @@ const MyBlogs = () => {
           ))
         ) : (
           <div className="col-span-full flex h-40 items-center justify-center text-lg font-medium">
-            Loading...
+           No Blog is Created by You. 
           </div>
         )}
       </div>

@@ -1,17 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthProvider"; // ✅ Use hook
+import { useNavigate, useParams } from "react-router-dom";
+import { useAuth } from "../context/AuthProvider";
 
-const CreateBlogs = () => {
+const UpdateBlog = () => {
   const [blogImage, setBlogImage] = useState(null);
   const [preview, setPreview] = useState("");
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const { token } = useAuth(); // ✅ Get token from context
-
-  // console.log(token);
+  const { token } = useAuth();
+  const { blogId } = useParams(); // blog ID from route
 
   const {
     register,
@@ -19,6 +19,24 @@ const CreateBlogs = () => {
     reset,
     formState: { errors, isSubmitting },
   } = useForm();
+
+  // Fetch existing blog
+  useEffect(() => {
+    const fetchBlog = async () => {
+      try {
+        const res = await axios.get(`http://localhost:3005/api/blogs/${blogId}`);
+        const { title, category, about, blogImage } = res.data;
+        reset({ title, category, about });
+        setPreview(blogImage);
+      } catch (err) {
+        toast.error("Failed to fetch blog data.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlog();
+  }, [blogId, reset]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -33,25 +51,17 @@ const CreateBlogs = () => {
   };
 
   const onSubmit = async (data) => {
-    if (!blogImage) {
-      toast.warning("Please upload a blog image.");
-      return;
-    }
-
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("category", data.category);
     formData.append("about", data.about);
-    formData.append("blogImage", blogImage);
+    if (blogImage) {
+      formData.append("blogImage", blogImage);
+    }
 
     try {
-      if (!token) {
-        toast.error("No token found. Please log in again.");
-        return;
-      }
-
-      const res = await axios.post(
-        "http://localhost:3005/api/blogs/create",
+      const res = await axios.put(
+        `http://localhost:3005/api/blogs/update/${blogId}`,
         formData,
         {
           headers: {
@@ -62,22 +72,20 @@ const CreateBlogs = () => {
         }
       );
 
-      toast.success(res.data.message || "Blog created successfully!", {
+      toast.success("Blog updated successfully", {
         autoClose: 2000,
         onClose: () => navigate("/dashboard"),
       });
-
-      reset();
-      setBlogImage(null);
-      setPreview("");
     } catch (err) {
-      toast.error(err?.response?.data?.message || "Failed to create blog.");
+      toast.error(err?.response?.data?.message || "Failed to update blog.");
     }
   };
 
+  if (loading) return <p className="text-center mt-10">Loading blog...</p>;
+
   return (
     <div className="max-w-xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
-      <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Create Blog</h2>
+      <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Update Blog</h2>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         {/* Title */}
@@ -90,11 +98,8 @@ const CreateBlogs = () => {
               required: "Title is required",
               minLength: { value: 3, message: "Min 3 characters" },
             })}
-            placeholder="Enter Your Blogs Title "
           />
-          {errors.title && (
-            <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>
-          )}
+          {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>}
         </div>
 
         {/* Category */}
@@ -103,14 +108,9 @@ const CreateBlogs = () => {
           <input
             type="text"
             className="w-full border border-gray-300 rounded px-4 py-2"
-            {...register("category", {
-              required: "Category is required",
-            })}
-            placeholder="Enter Blog category"
+            {...register("category", { required: "Category is required" })}
           />
-          {errors.category && (
-            <p className="text-red-500 text-sm mt-1">{errors.category.message}</p>
-          )}
+          {errors.category && <p className="text-red-500 text-sm mt-1">{errors.category.message}</p>}
         </div>
 
         {/* About */}
@@ -123,16 +123,13 @@ const CreateBlogs = () => {
               required: "About is required",
               minLength: { value: 10, message: "Minimum 10 characters" },
             })}
-            placeholder="God devotional won’t see your activity..."
           />
-          {errors.about && (
-            <p className="text-red-500 text-sm mt-1">{errors.about.message}</p>
-          )}
+          {errors.about && <p className="text-red-500 text-sm mt-1">{errors.about.message}</p>}
         </div>
 
         {/* Blog Image */}
         <div>
-          <label className="block font-medium text-gray-700 mb-1">Blog Image</label>
+          <label className="block font-medium text-gray-700 mb-1">Blog Image (optional)</label>
           <input
             type="file"
             accept="image/*"
@@ -158,9 +155,9 @@ const CreateBlogs = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded shadow"
+            className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded shadow"
           >
-            {isSubmitting ? "Submitting..." : "Create Blog"}
+            {isSubmitting ? "Updating..." : "Update Blog"}
           </button>
         </div>
       </form>
@@ -168,4 +165,4 @@ const CreateBlogs = () => {
   );
 };
 
-export default CreateBlogs;
+export default UpdateBlog;
