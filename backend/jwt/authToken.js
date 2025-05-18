@@ -41,10 +41,10 @@ const createTokenAndSaveCookies = async (userId, res) => {
   });
 
   res.cookie("jwt", token, {
-    httpOnly: false,                          // Prevents JavaScript access (XSS protection)
+    httpOnly: true,                          // Prevents JavaScript access (XSS protection)
     secure: process.env.NODE_ENV === "production", // Only send on HTTPS in production
-    // sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax", // Prevent CSRF (but allow dev cookies)
-    sameSite: null, // Prevent CSRF (but allow dev cookies)
+    sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax", // Prevent CSRF (but allow dev cookies)
+    // sameSite: null, // Prevent CSRF (but allow dev cookies)
     maxAge: 7 * 24 * 60 * 60 * 1000,         // 7 days in ms
   });
 
